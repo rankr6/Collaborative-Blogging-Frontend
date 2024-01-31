@@ -36,10 +36,10 @@ const CreateBlogForm: React.FC = () => {
         headers: headers,
         body: formData,
       });
-      
+
       console.log('Request Headers:', headers);
       console.log('Request Body:', formData);
-      
+
       if (!response.ok) {
         console.error("Create blog failed. Status code:", response.status);
         console.error("Response Headers:", response.headers);
@@ -47,11 +47,11 @@ const CreateBlogForm: React.FC = () => {
         toast.error("Create blog failed. Please try again.");
         return;
       }
-      
+
 
       const responseData = await response.json();
       console.log(responseData);
-      
+
 
       if (!responseData || !responseData.id) {
         console.error("Create blog failed. Invalid response data:", responseData);
@@ -69,43 +69,43 @@ const CreateBlogForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-  <div className="mb-4">
-    <ToastContainer />
-    <label className="block text-gray-700 text-sm font-bold mb-2" >
-      Blog Title:
-    </label>
-    <input
-      type="text"
-      {...register("blogTitle", { required: true })}
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      id="blogTitle"
-      placeholder="Enter blog title"
-    />
-  </div>
-  <div className="mb-6">
-    <label className="block text-gray-700 text-sm font-bold mb-2" >
-      Blog Description:
-    </label>
-    <textarea
-      {...register("blogDescription", { required: true })}
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-20"
-      id="blogDescription"
-      placeholder="Enter blog description"
-    ></textarea>
-  </div>
-  <div className="mb-4">
-    <label className="block text-gray-700 text-sm font-bold mb-2" >
-      Location:
-    </label>
-    <input
-      type="text"
-      {...register("location", { required: true })}
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      id="location"
-      placeholder="Enter location"
-    />
-  </div>
-  {/* <div className="mb-4">
+      <div className="mb-4">
+        <ToastContainer />
+        <label className="block text-gray-700 text-sm font-bold mb-2" >
+          Blog Title:
+        </label>
+        <input
+          type="text"
+          {...register("blogTitle", { required: true })}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="blogTitle"
+          placeholder="Enter blog title"
+        />
+      </div>
+      <div className="mb-6">
+        <label className="block text-gray-700 text-sm font-bold mb-2" >
+          Blog Description:
+        </label>
+        <textarea
+          {...register("blogDescription", { required: true })}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-20"
+          id="blogDescription"
+          placeholder="Enter blog description"
+        ></textarea>
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" >
+          Location:
+        </label>
+        <input
+          type="text"
+          {...register("location", { required: true })}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="location"
+          placeholder="Enter location"
+        />
+      </div>
+      {/* <div className="mb-4">
     <label className="block text-gray-700 text-sm font-bold mb-2">
       Date:
     </label>
@@ -116,27 +116,27 @@ const CreateBlogForm: React.FC = () => {
       id="date"
     />
   </div> */}
-  <div className="mb-6">
-    <label className="block text-gray-700 text-sm font-bold mb-2" >
-      Blog Thumbnail:
-    </label>
-    <input
-      type="file"
-      accept="image/*"
-      {...register("blogThumbnail", { required: true })}
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      id="blogThumbnail"
-    />
-  </div>
-  <div className="flex items-center justify-between">
-    <button
-      type="submit"
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-    >
-      Create Blog
-    </button>
-  </div>
-</form>
+      <div className="mb-6">
+        <label className="block text-gray-700 text-sm font-bold mb-2" >
+          Blog Thumbnail:
+        </label>
+        <input
+          type="file"
+          accept="image/*"
+          {...register("blogThumbnail", { required: true })}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="blogThumbnail"
+        />
+      </div>
+      <div className="flex items-center justify-between">
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Create Blog
+        </button>
+      </div>
+    </form>
 
   );
 };
