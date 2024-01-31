@@ -54,7 +54,7 @@ const SignupForm: React.FC = () => {
       localStorage.setItem("token", responseData.token);
       localStorage.setItem("userData", JSON.stringify(responseData.user));
       localStorage.setItem("userID",responseData.user.id)
-      navigate("/");
+      navigate("/signin");
     } catch (error) {
       console.error("Sign-up failed:", error);
       toast.error("Sign-up failed. Please check your information and try again.");

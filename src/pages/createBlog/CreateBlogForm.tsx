@@ -34,16 +34,13 @@ const CreateBlogForm: React.FC = () => {
         method: "POST",
         credentials: 'include',
         headers: headers,
-        body: formData,
       });
 
       console.log('Request Headers:', headers);
-      console.log('Request Body:', formData);
 
       if (!response.ok) {
         console.error("Create blog failed. Status code:", response.status);
         console.error("Response Headers:", response.headers);
-        console.error("Response Body:", await response.text());
         toast.error("Create blog failed. Please try again.");
         return;
       }
