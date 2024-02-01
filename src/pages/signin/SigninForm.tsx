@@ -20,20 +20,12 @@ const SigninForm: React.FC = () => {
     const { register, handleSubmit } = useForm<FormValues>();
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
-        const { firstName, lastName, email, mobileNumber, password, username } = data;
         try {
             const response = await fetch(`${API_ENDPOINT}/session`, {
                 method: "POST",
                 credentials: 'include',
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
-                    mobileNumber: mobileNumber,
-                    password: password,
-                    username: username
-                }),
+                body: JSON.stringify(data),
             });
 
             if (!response.ok) {
@@ -50,7 +42,7 @@ const SigninForm: React.FC = () => {
                 return;
             }
             console.log(responseData);
-            
+
             localStorage.setItem("token", responseData.token);
             localStorage.setItem("firstName", responseData.firstName);
             localStorage.setItem("lastName", responseData.lastName);

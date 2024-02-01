@@ -23,7 +23,7 @@ const ViewBlog = () => {
   const [likesCount, setLikesCount] = useState<number>(0); // State to track the number of likes
   const blogDispatch = useBlogDispatch();
   const navigate = useNavigate();
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchData = async () => {
       if (blogID !== undefined) {  // Check if blogID is defined
@@ -42,12 +42,16 @@ const ViewBlog = () => {
       const response = await fetch(`${API_ENDPOINT}/blog/like/${blogID}`, {
         method: "POST",
         credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
       });
-  
+
       if (response.ok && blogID !== undefined) {
         // Fetch the updated data after successful like
         const updatedData = await fetchBlogData(blogDispatch, blogID);
-  
+
         // Update local state based on the new data
         setIsLiked(updatedData.likes > 0);
         setLikesCount(updatedData.likes);
@@ -61,8 +65,8 @@ const ViewBlog = () => {
       console.error(error);
     }
   };
-  
-  
+
+
 
 
   if (!blogData) {

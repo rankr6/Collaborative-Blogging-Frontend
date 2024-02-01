@@ -34,6 +34,7 @@ const CreateBlogForm: React.FC = () => {
         method: "POST",
         credentials: 'include',
         headers: headers,
+        body: formData
       });
 
       console.log('Request Headers:', headers);
