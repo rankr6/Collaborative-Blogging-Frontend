@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchBlogData } from "../../context/ViewBlog/action";
 import { useBlogDispatch } from "../../context/ViewBlog/context";
 import { API_ENDPOINT } from "../../config/constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
+import Comments from "./Comment";
+import { CommentsForm } from "./CommentForm";
 
 interface BlogData {
   blogTitle: string;
@@ -19,14 +20,16 @@ interface BlogData {
 const ViewBlog = () => {
   const { blogID } = useParams();
   const [blogData, setBlogData] = useState<BlogData | null>(null);
-  const [isLiked, setIsLiked] = useState<boolean>(false); // State to track if the blog is liked
-  const [likesCount, setLikesCount] = useState<number>(0); // State to track the number of likes
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [likesCount, setLikesCount] = useState<number>(0);
+  const [showCommentForm, setShowCommentForm] = useState<boolean>(false); // State to toggle comment form
   const blogDispatch = useBlogDispatch();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     const fetchData = async () => {
-      if (blogID !== undefined) {  // Check if blogID is defined
+      if (blogID !== undefined) {
         const data = await fetchBlogData(blogDispatch, blogID);
         setBlogData(data);
         setIsLiked(data.likes > 0);
@@ -49,14 +52,10 @@ const ViewBlog = () => {
       });
 
       if (response.ok && blogID !== undefined) {
-        // Fetch the updated data after successful like
         const updatedData = await fetchBlogData(blogDispatch, blogID);
-
-        // Update local state based on the new data
         setIsLiked(updatedData.likes > 0);
         setLikesCount(updatedData.likes);
       } else if (response.status === 401) {
-        // Redirect to sign-in page if user is not signed in
         navigate("/signin");
       } else {
         console.error("Failed to like blog");
@@ -66,8 +65,13 @@ const ViewBlog = () => {
     }
   };
 
+  const toggleCommentForm = () => {
+    setShowCommentForm(!showCommentForm);
+  };
 
-
+  const hideCommentForm = () => {
+    setShowCommentForm(false);
+  };
 
   if (!blogData) {
     return <div>Loading...</div>;
@@ -81,7 +85,7 @@ const ViewBlog = () => {
       </div>
       <div className="border-t border-gray-200">
         <dl>
-          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-sm font-medium text-gray-500">Location</dt>
             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{blogData.location}</dd>
           </div>
@@ -100,17 +104,31 @@ const ViewBlog = () => {
             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
               <button
                 onClick={handleLikeClick}
-                className={`like-button ${isLiked ? "liked" : ""}`}
+                className={`like-button`}
               >
-                {isLiked ? (
-                  <FontAwesomeIcon icon={faHeart} color="red" className="heart-icon" />
-                ) : (
-                  <FontAwesomeIcon icon={faHeart} className="heart-icon" />
-                )}
-                ({likesCount})
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  color={isLiked ? "red" : "currentColor"}
+                  className="heart-icon"
+                />
+                {likesCount}
               </button>
+              {/* Comment icon */}
+              <FontAwesomeIcon
+                icon={faComment}
+                className="comment-icon ml-2 cursor-pointer"
+                onClick={toggleCommentForm} // Toggle comment form on click
+              />
             </dd>
           </div>
+          {/* Render CommentsForm if showCommentForm is true */}
+          {showCommentForm && (
+            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <CommentsForm onHideCommentForm={hideCommentForm} />
+            </div>
+          )}
+          {/* Render Comments */}
+          <Comments />
         </dl>
       </div>
     </div>
