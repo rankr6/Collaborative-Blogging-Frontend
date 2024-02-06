@@ -4,7 +4,7 @@ import { fetchBlogData } from "../../context/ViewBlog/action";
 import { useBlogDispatch } from "../../context/ViewBlog/context";
 import { API_ENDPOINT } from "../../config/constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faComment, faShare, faBookmark } from "@fortawesome/free-solid-svg-icons";
 import Comments from "./Comment";
 import { CommentsForm } from "./CommentForm";
 
@@ -22,7 +22,10 @@ const ViewBlog = () => {
   const [blogData, setBlogData] = useState<BlogData | null>(null);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likesCount, setLikesCount] = useState<number>(0);
-  const [showCommentForm, setShowCommentForm] = useState<boolean>(false); // State to toggle comment form
+  const [showCommentForm, setShowCommentForm] = useState<boolean>(false);
+  const [showSharePopup, setShowSharePopup] = useState<boolean>(false);
+  const [shareableLink, setShareableLink] = useState<string>("");
+  const [isBlogSaved, setIsBlogSaved] = useState<boolean>(false); // State to track whether the blog is saved
   const blogDispatch = useBlogDispatch();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -65,12 +68,66 @@ const ViewBlog = () => {
     }
   };
 
-  const toggleCommentForm = () => {
-    setShowCommentForm(!showCommentForm);
+  const handleShareClick = async () => {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/blog/share/${blogID}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const shareableLink = data.shareableLink;
+        setShareableLink(shareableLink);
+        setShowSharePopup(true);
+      } else if (response.status === 401) {
+        navigate("/signin");
+      } else {
+        console.error("Failed to share blog");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSaveClick = async () => {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/user/saveblog/${blogID}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      if (response.ok) {
+        setIsBlogSaved(true); // Update the state to indicate that the blog is saved
+      } else if (response.status === 401) {
+        navigate("/signin");
+      } else {
+        console.error("Failed to save blog");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const hideCommentForm = () => {
     setShowCommentForm(false);
+  };
+
+  const toggleCommentForm = () => {
+    setShowCommentForm(!showCommentForm);
+  };
+
+  const copyShareableLink = () => {
+    navigator.clipboard.writeText(shareableLink);
+    console.log("Shareable link copied to clipboard:", shareableLink);
   };
 
   if (!blogData) {
@@ -85,7 +142,7 @@ const ViewBlog = () => {
       </div>
       <div className="border-t border-gray-200">
         <dl>
-        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-sm font-medium text-gray-500">Location</dt>
             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{blogData.location}</dd>
           </div>
@@ -100,7 +157,7 @@ const ViewBlog = () => {
             </dd>
           </div>
           <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt className="text-sm font-medium text-gray-500">Likes</dt>
+            <dt className="text-sm font-medium text-gray-500">Actions</dt>
             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
               <button
                 onClick={handleLikeClick}
@@ -113,21 +170,34 @@ const ViewBlog = () => {
                 />
                 {likesCount}
               </button>
-              {/* Comment icon */}
               <FontAwesomeIcon
                 icon={faComment}
                 className="comment-icon ml-2 cursor-pointer"
-                onClick={toggleCommentForm} // Toggle comment form on click
+                onClick={toggleCommentForm}
               />
+              <FontAwesomeIcon
+                icon={faShare}
+                className="share-icon ml-2 cursor-pointer"
+                onClick={handleShareClick}
+              />
+              <FontAwesomeIcon
+                icon={faBookmark}
+                className={`save-icon ml-2 cursor-pointer ${isBlogSaved ? 'text-blue-500' : ''}`}
+                onClick={handleSaveClick}
+              />
+              {showSharePopup && (
+                <div className="share-popup">
+                  <input type="text" value={shareableLink} readOnly />
+                  <button onClick={copyShareableLink}>Copy</button>
+                </div>
+              )}
             </dd>
           </div>
-          {/* Render CommentsForm if showCommentForm is true */}
           {showCommentForm && (
             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <CommentsForm onHideCommentForm={hideCommentForm} />
             </div>
           )}
-          {/* Render Comments */}
           <Comments />
         </dl>
       </div>
