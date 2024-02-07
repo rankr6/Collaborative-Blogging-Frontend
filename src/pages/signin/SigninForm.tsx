@@ -44,11 +44,13 @@ const SigninForm: React.FC = () => {
             console.log(responseData);
 
             localStorage.setItem("token", responseData.token);
-            localStorage.setItem("firstName", responseData.firstName);
-            localStorage.setItem("lastName", responseData.lastName);
-            localStorage.setItem("email", responseData.email);
-            localStorage.setItem("mobileNumber", responseData.mobileNumber);
-            localStorage.setItem("userID", responseData.userID);
+            localStorage.setItem("firstName", responseData.user.firstName);
+            localStorage.setItem("lastName", responseData.user.lastName);
+            localStorage.setItem("email", responseData.user.email);
+            localStorage.setItem("mobileNumber", responseData.user.mobileNumber);
+            localStorage.setItem("userID", responseData.user.id);
+            localStorage.setItem("userName", responseData.user.username);
+
 
             navigate("/");
             toast.success("Sign-in successful!");

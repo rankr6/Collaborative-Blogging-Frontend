@@ -4,7 +4,7 @@ import { fetchBlogData } from "../../context/ViewBlog/action";
 import { useBlogDispatch } from "../../context/ViewBlog/context";
 import { API_ENDPOINT } from "../../config/constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faComment, faShare, faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faComment, faShare, faBookmark, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Comments from "./Comment";
 import { CommentsForm } from "./CommentForm";
 
@@ -26,6 +26,7 @@ const ViewBlog = () => {
   const [showSharePopup, setShowSharePopup] = useState<boolean>(false);
   const [shareableLink, setShareableLink] = useState<string>("");
   const [isBlogSaved, setIsBlogSaved] = useState<boolean>(false); // State to track whether the blog is saved
+  const [canDelete, setCanDelete] = useState<boolean>(false); // State to determine if user can delete the blog
   const blogDispatch = useBlogDispatch();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -37,12 +38,12 @@ const ViewBlog = () => {
         setBlogData(data);
         setIsLiked(data.likes > 0);
         setLikesCount(data.likes);
+        setCanDelete(data.userID == localStorage.getItem("userID")); // Check if current user is creator
       }
     };
 
     fetchData();
   }, [blogDispatch, blogID]);
-
   const handleLikeClick = async () => {
     try {
       const response = await fetch(`${API_ENDPOINT}/blog/like/${blogID}`, {
@@ -130,12 +131,40 @@ const ViewBlog = () => {
     console.log("Shareable link copied to clipboard:", shareableLink);
   };
 
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/publisher/blogs/${blogID}/${localStorage.getItem("userID")}`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      if (response.ok) {
+        navigate("/"); // Redirect to homepage or any appropriate route after deletion
+      } else if (response.status === 401) {
+        navigate("/signin");
+      } else {
+        console.error("Failed to delete blog");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   if (!blogData) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="mx-auto max-w-2xl bg-white shadow overflow-hidden sm:rounded-lg content-center">
+      {canDelete && ( // Show delete button only if user can delete the blog
+        <div className="absolute top-0 right-0 p-2">
+          <FontAwesomeIcon icon={faTrash} onClick={handleDelete} className="cursor-pointer text-red-600" />
+        </div>
+      )}
       <div className="px-4 py-5 sm:px-6">
         <h1 className="text-lg leading-6 font-medium text-gray-900">{blogData.blogTitle}</h1>
         <p className="mt-1 max-w-2xl text-sm text-gray-500">{blogData.blogDescription}</p>
@@ -191,6 +220,7 @@ const ViewBlog = () => {
                   <button onClick={copyShareableLink}>Copy</button>
                 </div>
               )}
+
             </dd>
           </div>
           {showCommentForm && (
