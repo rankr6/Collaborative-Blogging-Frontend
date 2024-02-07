@@ -13,7 +13,9 @@ import ViewBlogs from "../pages/blogs";
 const router = createBrowserRouter([
   {
     path: "/signin",
-    element: <Signin />
+    element: (
+      <Signin />
+    )
   },
   {
     path: "/signup",
@@ -38,16 +40,17 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePageLayout />,
+
   },
   {
     path: "blogs",
-    element: 
-        <ViewBlogs />
+    element:
+      <ViewBlogs />
   },
   {
     path: "blogs/:blogID",
     element: (
-        <ViewbBlog />
+      <ViewbBlog />
     )
   },
   {
