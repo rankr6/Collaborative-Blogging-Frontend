@@ -58,7 +58,7 @@ const Appbar = () => {
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <img
-                    className="h-10 w-auto" // Adjusted height and width
+                    className="h-20 w-auto" // Adjusted height and width
                     src={Logo}
                     alt="Collaborative-Blogging"
                   />

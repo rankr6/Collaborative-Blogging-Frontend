@@ -66,75 +66,60 @@ const CreateBlogForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <div className="mb-4">
-        <ToastContainer />
-        <label className="block text-gray-700 text-sm font-bold mb-2" >
-          Blog Title:
-        </label>
-        <input
-          type="text"
-          {...register("blogTitle", { required: true })}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="blogTitle"
-          placeholder="Enter blog title"
-        />
+    <div className="py-12">
+      <ToastContainer />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+          <div className="p-6 bg-white border-b border-gray-200">
+            <form  onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div>
+                <label htmlFor="blogTitle" className="block text-lg font-semibold text-gray-700">Title</label>
+                <input type="text"
+                  {...register("blogTitle", { required: true })}
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  id="blogTitle"
+                  placeholder="Enter blog title"
+                />
+              </div>
+              <div>
+                <label htmlFor="blogDescription" className="block text-lg font-semibold text-gray-700">Description</label>
+                <textarea
+                  {...register("blogDescription", { required: true })}
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  id="blogDescription"
+                  placeholder="Enter blog description"
+                ></textarea>
+              </div>
+              <div>
+                <label htmlFor="location" className="block text-lg font-semibold text-gray-700">Location</label>
+                <input
+                  type="text"
+                  {...register("location", { required: true })}
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  id="location"
+                  placeholder="Enter location"
+                />
+              </div>
+              <div>
+                <label htmlFor="blogThumbnail" className="block text-lg font-semibold text-gray-700">Thumbnail</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  {...register("blogThumbnail", { required: true })}
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  id="blogThumbnail"
+                />
+              </div>
+              <div className="flex justify-center">
+                <button type="submit" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  Create Blog
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-      <div className="mb-6">
-        <label className="block text-gray-700 text-sm font-bold mb-2" >
-          Blog Description:
-        </label>
-        <textarea
-          {...register("blogDescription", { required: true })}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-20"
-          id="blogDescription"
-          placeholder="Enter blog description"
-        ></textarea>
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" >
-          Location:
-        </label>
-        <input
-          type="text"
-          {...register("location", { required: true })}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="location"
-          placeholder="Enter location"
-        />
-      </div>
-      {/* <div className="mb-4">
-    <label className="block text-gray-700 text-sm font-bold mb-2">
-      Date:
-    </label>
-    <input
-      type="date"
-      {...register("date", { required: true })}
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      id="date"
-    />
-  </div> */}
-      <div className="mb-6">
-        <label className="block text-gray-700 text-sm font-bold mb-2" >
-          Blog Thumbnail:
-        </label>
-        <input
-          type="file"
-          accept="image/*"
-          {...register("blogThumbnail", { required: true })}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="blogThumbnail"
-        />
-      </div>
-      <div className="flex items-center justify-between">
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Create Blog
-        </button>
-      </div>
-    </form>
+    </div>
 
   );
 };
