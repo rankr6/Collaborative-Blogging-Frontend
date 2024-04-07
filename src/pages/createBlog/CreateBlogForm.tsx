@@ -105,7 +105,7 @@ const CreateBlogForm: React.FC = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  {...register("blogThumbnail", { required: true })}
+                  {...register("blogThumbnail")}
                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   id="blogThumbnail"
                 />

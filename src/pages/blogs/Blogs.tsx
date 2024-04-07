@@ -25,10 +25,12 @@ const Blogs = () => {
     return <div className="text-left p-4">{errorMessage}</div>;
   }
 
+  // Reverse the order of blogs based on their IDs
+  const reversedBlogs = [...blogs].reverse();
 
   return (
     <div>
-      {blogs.map((blog) => (
+      {reversedBlogs.map((blog) => (
         <div key={blog.id} className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
           <div className="md:flex">
             <div className="p-8">
