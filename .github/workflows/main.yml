@@ -12,6 +12,7 @@ jobs:
 
       - name: Run app 
         run: | 
+          npm install --save-dev vite &
           npm run dev 
       
           
