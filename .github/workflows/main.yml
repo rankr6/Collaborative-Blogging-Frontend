@@ -1,4 +1,4 @@
-name: Automat deployment
+name: Automat deployment and CI CD pipeline
   
 on: [push]
 
@@ -34,5 +34,4 @@ jobs:
         run: |  
           curl -X POST -H 'Content-type: application/json' --data '{"text":"⚠️ Uh-oh! The CI & CD workflow encountered issues and failed. Immediate attention is needed. :warning:"}' ${{ secrets.SLACK_WEBHOOK_URL }}  
   
-      - name: Stop and remove Docker containers  
-        run: docker-compose down
+      
