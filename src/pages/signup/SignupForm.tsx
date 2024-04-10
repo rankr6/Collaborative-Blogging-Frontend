@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { API_ENDPOINT } from "../../config/constants";
@@ -16,44 +16,36 @@ type FormValues = {
 
 const SignupForm: React.FC = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    if (step === 1) {
-      setStep(2);
-    } else {
-      try {
-        const response = await fetch(`${API_ENDPOINT}/users`, {
-          method: "POST",
-          credentials: 'include',
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+    try {
+      const response = await fetch(`${API_ENDPOINT}/users`, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-        if (!response.ok) {
-          throw new Error("Sign-up failed");
-        }
-
-        const responseData = await response.json();
-        console.log(responseData);
-        toast.success("Sign-up successful!");
-
-        localStorage.setItem("token", responseData.token);
-        localStorage.setItem("userData", JSON.stringify(responseData.user));
-        localStorage.setItem("userID", responseData.user.id)
-        navigate("/signin");
-      } catch (error) {
-        console.error("Sign-up failed:", error);
-        toast.error("Sign-up failed. Please check your information and try again.");
+      if (!response.ok) {
+        throw new Error("Sign-up failed");
       }
+
+      const responseData = await response.json();
+      console.log(responseData);
+      toast.success("Sign-up successful!");
+
+      localStorage.setItem("token", responseData.token);
+      localStorage.setItem("userData", JSON.stringify(responseData.user));
+      localStorage.setItem("userID", responseData.user.id)
+      navigate("/signin");
+    } catch (error) {
+      console.error("Sign-up failed:", error);
+      toast.error("Sign-up failed. Please check your information and try again.");
     }
   };
-
-  const nextStep = () => setStep(step + 1);
-  const prevStep = () => setStep(step - 1);
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -67,58 +59,42 @@ const SignupForm: React.FC = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Create an account
             </h1>
-            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
-              {step === 1 && (
-                <>
-                  <div>
-                    <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-                    <input type="text" id="firstName" autoFocus {...register("firstName", { required: true })} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="First Name" />
-                  </div>
-                  <div>
-                    <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-                    <input type="text" id="lastName" autoFocus {...register("lastName", { required: true })} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Last Name" />
-                  </div>
-                </>
-              )}
-              {step === 2 && (
-                <>
-                  <div>
-                    <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-                    <input type="text" id="username" autoFocus {...register("username", { required: true })} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username" />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                    <input type="email" id="email" autoFocus {...register("email", { required: true })} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Email" />
-                  </div>
-                </>
-              )}
-              {step === 3 && (
-                <>
-                  <div>
-                    <label htmlFor="mobileNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile Number</label>
-                    <input type="tel" id="mobileNumber" autoFocus {...register("mobileNumber", { required: true })} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Mobile Number" />
-                  </div>
-                  <div>
-                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                    <input type="password" id="password" autoFocus {...register("password", { required: true })} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Password" />
-                    {errors.password && <span>This field is required</span>}
-                  </div>
-                </>
-              )}
-              <div className="flex justify-between">
-                {step !== 1 && (
-                  <button onClick={prevStep} className="w-1/2 mr-2 text-gray-700 bg-gray-200 hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Previous</button>
-                )}
-                {step !== 3 ? (
-                  <button onClick={nextStep} className="w-1/2 text-blue bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Next</button>
-                ) : (
-                  <button type="submit" className="w-1/2 text-blue bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
-                )}
+            <form className="grid grid-cols-2 gap-4" onSubmit={handleSubmit(onSubmit)}>
+              <div>
+                <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
+                <input type="text" id="firstName" autoFocus {...register("firstName", { required: true, pattern: /^[a-zA-Z]+$/ })} className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${errors.firstName ? "border-red-500" : ""}`} placeholder="First Name" />
+                {errors.firstName && <span className="text-red-500">Please enter a valid first name</span>}
               </div>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account? <a href="/signin" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
-              </p>
+              <div>
+                <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
+                <input type="text" id="lastName" autoFocus {...register("lastName", { required: true, pattern: /^[a-zA-Z]+$/ })} className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${errors.lastName ? "border-red-500" : ""}`} placeholder="Last Name" />
+                {errors.lastName && <span className="text-red-500">Please enter a valid last name</span>}
+              </div>
+              <div>
+                <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                <input type="text" id="username" autoFocus {...register("username", { required: true })} className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${errors.username ? "border-red-500" : ""}`} placeholder="Username" />
+                {errors.username && <span className="text-red-500">Username is required</span>}
+              </div>
+              <div>
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                <input type="email" id="email" autoFocus {...register("email", { required: true })} className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${errors.email ? "border-red-500" : ""}`} placeholder="Email" />
+                {errors.email && <span className="text-red-500">Email is required</span>}
+              </div>
+              <div>
+                <label htmlFor="mobileNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile Number</label>
+                <input type="tel" id="mobileNumber" autoFocus {...register("mobileNumber", { required: true, pattern: /^[0-9]{10}$/ })} className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${errors.mobileNumber ? "border-red-500" : ""}`} placeholder="Mobile Number" />
+                {errors.mobileNumber && <span className="text-red-500">Please enter a valid 10-digit mobile number</span>}
+              </div>
+              <div>
+                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                <input type="password" id="password" autoFocus {...register("password", { required: true })} className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${errors.password ? "border-red-500" : ""}`} placeholder="Password" />
+                {errors.password && <span className="text-red-500">Password is required</span>}
+              </div>
+              <button type="submit" className="col-span-2 w-full text-blue bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
             </form>
+            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+              Already have an account? <a href="/signin" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
+            </p>
           </div>
         </div>
       </div>
