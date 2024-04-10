@@ -62,9 +62,11 @@ const Appbar = () => {
                   alt="Collaborative-Blogging"
                 />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-black">{userName}</p>
+              {userName && (
+                <div>
+                <p className="text-2xl font-bold text-black">Hi, {userName}</p>
               </div>
+              )}
             </div>
 
             {/* Center section */}
