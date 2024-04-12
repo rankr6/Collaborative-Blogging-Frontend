@@ -42,7 +42,6 @@ const Appbar = () => {
   const handleNewBlogClick = () => {
     if (userID) {
       navigate(`/createBlog`);
-      throw new Error("Simulated error for testing Sentry.");
     } else {
       // Handle the case where the user ID is not available
       console.error("User ID not available");

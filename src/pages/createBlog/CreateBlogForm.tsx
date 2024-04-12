@@ -58,7 +58,7 @@ const CreateBlogForm: React.FC = () => {
       }
       // Redirect to the created blog or any other page
       navigate(`/`);
-      toast.success("Blog created successfully!");
+      throw new Error("Simulated error for testing Sentry.");
     } catch (error) {
       console.error("Create blog failed:", error);
       toast.error("Create blog failed. An unexpected error occurred.");
