@@ -5,6 +5,7 @@ import router from "./routes"
 import { ThemeContext } from "./context/theme";
 import { CommentProvider } from "./context/Comment/context";
 
+
 const App = () => {
   const { theme } = useContext(ThemeContext)
   return (
