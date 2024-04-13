@@ -1,9 +1,11 @@
+/* eslint-disable no-irregular-whitespace */
 import { useContext } from "react";
 import { RouterProvider } from "react-router-dom";
 import "./App.css";
 import router from "./routes"
 import { ThemeContext } from "./context/theme";
 import { CommentProvider } from "./context/Comment/context";
+import "./i18n.ts"
 
 
 const App = () => {

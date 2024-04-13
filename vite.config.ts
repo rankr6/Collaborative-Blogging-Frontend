@@ -43,6 +43,9 @@ export default defineConfig({
   }), sentryVitePlugin({
     org: "mu-9p",
     project: "colab-blog"
+  }), sentryVitePlugin({
+    org: "rr-r2",
+    project: "1st"
   })],
 
   build: {
