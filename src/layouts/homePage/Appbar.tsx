@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Logo from "../../assets/images/logo.png";
-import { useState, Fragment, useEffect } from 'react';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { useState, Fragment, useEffect } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
 import UserCircleIcon from "@heroicons/react/24/outline/UserCircleIcon";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,8 @@ interface NavigationItem {
   href: string;
 }
 
-const classNames = (...classes: string[]): string => classes.filter(Boolean).join(' ');
+const classNames = (...classes: string[]): string =>
+  classes.filter(Boolean).join(" ");
 
 const Appbar = () => {
   const navigate = useNavigate();
@@ -21,12 +22,12 @@ const Appbar = () => {
   const userName = localStorage.getItem("userName");
   const { t, i18n } = useTranslation();
   const lngs = {
-    en: { nativeName: 'English' },
-    guj: { nativeName: 'ગુજરાતી' },
-    hi: { nativeName: 'हिन्दी' },
-    te: { nativeName: 'తెలుగు' },
-    mr: { nativeName: 'मराठी' },
-    ta: { nativeName: 'தமிழ்' }
+    en: { nativeName: "English" },
+    guj: { nativeName: "ગુજરાતી" },
+    hi: { nativeName: "हिन्दी" },
+    te: { nativeName: "తెలుగు" },
+    mr: { nativeName: "मराठी" },
+    ta: { nativeName: "தமிழ்" },
   };
 
   // Set initial state with empty array
@@ -39,13 +40,13 @@ const Appbar = () => {
   const updateUserNavigation = (isAuthenticated: boolean) => {
     const updatedNavigation = isAuthenticated
       ? [
-        { name: t('Profile'), href: '#' },
-        { name: t('Sign out'), href: '/logout' },
-      ]
+          { name: t("Profile"), href: "#" },
+          { name: t("Sign out"), href: "/logout" },
+        ]
       : [
-        { name: t('Sign in'), href: '/signin' },
-        { name: t('Sign up'), href: '/signup' },
-      ];
+          { name: t("Sign in"), href: "/signin" },
+          { name: t("Sign up"), href: "/signup" },
+        ];
     setUserNavigation(updatedNavigation);
   };
 
@@ -60,7 +61,10 @@ const Appbar = () => {
 
   return (
     <>
-      <Disclosure as="nav" className="border-b border-slate-200 bg-gradient-to-r from-indigo-400 via-blue-300 to-sky-200 text-black p-4 rounded-lg">
+      <Disclosure
+        as="nav"
+        className="border-b border-slate-200 bg-gradient-to-r from-indigo-400 via-blue-300 to-sky-200 text-black p-4 rounded-lg"
+      >
         {() => (
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
             <div className="flex items-center">
@@ -73,20 +77,24 @@ const Appbar = () => {
               </div>
               {userName && (
                 <div>
-                  <p className="text-2xl font-bold text-black">{t('Hi')}, {userName}</p>
+                  <p className="text-2xl font-bold text-black">
+                    {t("Hi")}, {userName}
+                  </p>
                 </div>
               )}
             </div>
 
             <div className="flex-grow text-center">
-              <h1 className="text-2xl font-bold text-black underline decoration-indigo-500">{t('Welcome to Collaborative Blogging')}</h1>
+              <h1 className="text-2xl font-bold text-black underline decoration-indigo-500">
+                {t("Welcome to Collaborative Blogging")}
+              </h1>
             </div>
 
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <Menu>
                   <Menu.Button className="p-2 text-black font-bold hover:text-blue-600 rounded-full focus:outline-none">
-                    {t('Language')}
+                    {t("Language")}
                   </Menu.Button>
                   <Transition
                     as={Fragment}
@@ -103,10 +111,13 @@ const Appbar = () => {
                           {({ active }) => (
                             <button
                               className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-pink-700'
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-pink-700"
                               )}
-                              style={{ fontWeight: i18n.language === lng ? 'bold' : 'normal' }}
+                              style={{
+                                fontWeight:
+                                  i18n.language === lng ? "bold" : "normal",
+                              }}
                               onClick={() => {
                                 i18n.changeLanguage(lng);
                               }}
@@ -126,7 +137,7 @@ const Appbar = () => {
                     onClick={handleNewBlogClick}
                     className="p-2 text-black hover:text-blue-600 rounded-full font-bold focus:outline-none"
                   >
-                    {t('+ New Blog')}
+                    {t("+ New Blog")}
                   </button>
                 </div>
               )}
@@ -151,8 +162,8 @@ const Appbar = () => {
                             <a
                               href={item.href}
                               className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-pink-700'
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-pink-700"
                               )}
                             >
                               {item.name}
