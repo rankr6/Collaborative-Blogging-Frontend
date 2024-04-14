@@ -34,6 +34,7 @@
         "Username is required": "వాడుకరి పేరు అవసరం",
         "Please enter a valid last name": "దయచేసి మాన్యంగా చివరి పేరు నమోదు చేయండి",
         "Please enter a valid first name": "దయచేసి మాన్యంగా మొదటి పేరు నమోదు చేయండి",
-        "Login here": "ఇక్కడ లాగిన్ చేయండి"
+        "Login here": "ఇక్కడ లాగిన్ చేయండి",
+        "close" : "మూసి ఉంచు"
     }
 }

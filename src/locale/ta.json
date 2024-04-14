@@ -34,6 +34,7 @@
         "Username is required": "பயனர்பெயர் தேவை",
         "Please enter a valid last name": "சரியான கடைசி பெயரை உள்ளிடவும்",
         "Please enter a valid first name": "சரியான முதல் பெயரை உள்ளிடவும்",
-        "Login here": "இங்கே உள்நுழைக"
+        "Login here": "இங்கே உள்நுழைக",
+        "close" : "மூடு"
     }
 }

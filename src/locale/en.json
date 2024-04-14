@@ -34,6 +34,7 @@
         "Username is required": "Username is required",
         "Please enter a valid last name": "Please enter a valid last name",
         "Please enter a valid first name": "Please enter a valid first name",
-        "Login here": "Login here"
+        "Login here": "Login here",
+        "close": "Close"
     }
 }

@@ -40,18 +40,19 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePageLayout />,
-
+    children: [
+      {
+        path: "blogs/:blogID",
+        element: (
+          <ViewbBlog />
+        )
+      },
+    ]
   },
   {
     path: "blogs",
     element:
       <ViewBlogs />
-  },
-  {
-    path: "blogs/:blogID",
-    element: (
-      <ViewbBlog />
-    )
   },
   {
     path: "/homePage",

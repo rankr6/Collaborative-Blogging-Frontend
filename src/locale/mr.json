@@ -34,6 +34,7 @@
         "Username is required": "वापरकर्तानाव आवश्यक आहे",
         "Please enter a valid last name": "कृपया एक वैध आडनाव प्रविष्ट करा",
         "Please enter a valid first name": "कृपया एक वैध प्रथम नाव प्रविष्ट करा",
-        "Login here": "येथे लॉग इन करा"
+        "Login here": "येथे लॉग इन करा",
+        "close": "बंद करा"
     }
 }
